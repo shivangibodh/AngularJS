@@ -1,0 +1,127 @@
+Data Binding Methods (Interpolation / Property binding / Attribute binding / class binding / style binding / event binding)
+______________________________________________________________________ x______________________________________________________________
+App.component.html
+____________________________________________________________________________________________________________________________________
+<div style="text-align:center">
+  <h1>    WELL DONE  </h1><br>
+  <h1>    Welcome to {{title}}!  </h1>
+  <!-- -->
+  <button disabled='{{isDisabled1}}'>Interpolation</button>  
+  <!-- When setting an element property to a non-string 
+       data value, you must use property Binding-->
+  <!-- -->
+       <button [disabled]='isDisabled2'>Property Binding</button>    
+  <br><br>    
+  <table border={{borDer}}>    
+        <tr>
+             <!-- <th colspan=2> -->
+           <!--  <th colspan={{colSpan}} >  -->
+           <!--  <th [colspan]= colSpan> -->
+           <th [attr.colspan]= colSpan>   Employee Details   </th>
+        </tr>        
+        <tr>
+            <td>First Name</td>
+            <td>{{firstName}}</td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td>{{lastName}}</td>
+        </tr>
+        <tr>
+            <td>Gender</td>
+            <td>{{gender}}</td>
+        </tr>
+        <tr>
+            <td>Age</td>
+            <td>{{age}}</td>
+        </tr>    
+</table>
+</div>
+
+______________________________________________________________________ x______________________________________________________________
+App.component.ts
+____________________________________________________________________________________________________________________________________
+import { Component } from '@angular/core';
+@Component({
+  selector: 'app-root',
+ // templateUrl: './app.component.html',
+  //template:`<button class='colorClass'>My Button</button>`,
+  //CSS Class binding in Angular
+  //  template:`
+            //  <button [class]='classesToApply'>My Button</button>
+            //  `
+  //style Binding
+  //template: `<button style="color:red">My Button</button>`
+  //  template: `<button style='color:red'
+  //             [style.font-weight]="isBold ? 'bold' : 'normal'">My Button
+  //            </button> `
+  //To set multiple inline styles use NgStyle directive
+  template: `<button style='color:red' [ngStyle]="addStyles()">My Button</button>`
+  //template:`<h1>{{'Name = ' + firstName}}</h1>`,
+   //template: `<h1>{{ firstName ? firstName : 'No name specified'}}</h1>`,
+})
+export class AppComponent {
+  isBold: boolean = true;
+  fontSize: number = 30;
+  isItalic: boolean = false;
+
+  addStyles() {
+    let styles = {
+        'font-weight': this.isBold ? 'bold' : 'normal',
+        'font-style': this.isItalic ? 'italic' : 'normal',
+        'font-size.px': this.fontSize    };
+    return styles;
+}
+  title:string = 'YASH';
+  firstName:string = 'Ram';
+  lastName:string = 'Lakhan';
+  gender:string = 'Male';
+  age:string = '25';
+
+  colSpan:number = 2
+  borDer:number= 1
+
+  isDisabled1:boolean = true;
+  isDisabled2:boolean = true;
+
+  classesToApply: string = 'colorClass italicsClass boldClass';
+}
+______________________________________________________________________ x__________________________________________________________________
+EventBindingComponent.ts
+____________________________________________________________________________________________________________________________________
+import { Component } from '@angular/core';
+
+@Component({
+    selector: 'app-root',
+    template: `<button (click)='onClick()' >Click me</button>
+               <button on-click='onClick()'>Click me</button>`
+   // With event binding we can also use the on- prefix alternative as shown below. This is known as the canonical form
+  // template: `<button on-click='onClick()'>Click me</button>`
+  
+    
+})
+export class EventBindingComponent {
+    onClick(): void {
+        console.log('Button Clicked');
+    }
+}
+
+
+______________________________________________________________________ x_______________________________________________________________
+
+Two way Databinding
+TWDBComponent.ts 
+____________________________________________________________________________________________________________________________________
+import { Component } from '@angular/core';
+@Component({
+    selector: 'app-root',
+    template: `
+                Name : <input [value]='name' (input)='name = $event.target.value'>
+                <br>
+                Name : <input [(ngModel)]='name'> <br>                
+                You entered : {{name}}
+              ` })
+export class TWDBComponent {
+    name: string = 'Tom';
+}
+
