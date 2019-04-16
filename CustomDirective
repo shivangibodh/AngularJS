@@ -1,0 +1,74 @@
+Custom Directive
+In this demo I created removeChar as a directive,which I can use to remove a char from element text on click event. 
+Commands : 
+ng g d DirectiveName   // For Directive
+ng generate component componentName  // For Component
+ButtonDirective.ts
+import { Directive, ElementRef, HostListener } from '@angular/core';
+
+@Directive({
+  selector: '[removeChar]'
+})
+export class ButtonDirective {
+// Access the directive's element reference 
+constructor(private ref: ElementRef) {}
+
+  // Handle click events
+  @HostListener('click') handleClick() {
+
+    // Remove the last character from the element's text
+    const str = this.ref.nativeElement.innerText;
+    if (str.length > 1) {
+      this.ref.nativeElement.innerText =
+        str.substring(0, str.length - 1);
+        
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+AppComponent.ts
+import {Component} from '@angular/core';
+
+// This component accesses directive removeChar
+@Component({
+selector: 'app-root',
+template: `
+<button removeChar>Click to remove characters</button>
+`})
+export class AppComponent {}
+
+
+
+
+
+AppModule.ts
+Declarations of ButtonDirective
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppComponent } from './app.component';
+import { ButtonDirective } from './button-directive.directive';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    ButtonDirective
+  ],
+  imports: [
+    BrowserModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
